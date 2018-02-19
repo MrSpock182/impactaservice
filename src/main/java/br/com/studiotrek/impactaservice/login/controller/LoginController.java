@@ -4,20 +4,23 @@ import br.com.studiotrek.impactaservice.login.model.Login;
 import br.com.studiotrek.impactaservice.login.regra.LoginRegra;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class LoginController {
 
     @RequestMapping(value = "/login/{rm}/{senha}", method = RequestMethod.GET)
-    public String get(@RequestBody @PathVariable("rm") String rm, @PathVariable("senha") String senha) {
+    public ResponseEntity<Login> get(@RequestBody @PathVariable("rm") String rm, @PathVariable("senha") String senha) {
         try {
             Login login = new Login();
             login = new LoginRegra(login).request(rm, senha);
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            return gson.toJson(login);
+            return new ResponseEntity<>(login, HttpStatus.OK);
+        } catch (IllegalAccessException ex) {
+            return new ResponseEntity<>(new Login(ex.getMessage()), HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
-            return "error";
+            return new ResponseEntity<>(new Login(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

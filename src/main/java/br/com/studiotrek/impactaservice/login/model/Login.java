@@ -4,7 +4,15 @@ import java.io.Serializable;
 
 public class Login implements Serializable {
     private String cookin;
-    private String response;
+    private String error;
+
+    public Login() {
+
+    }
+
+    public Login(String error) {
+        this.error = error;
+    }
 
     public String getCookin() {
         return cookin;
@@ -14,11 +22,11 @@ public class Login implements Serializable {
         this.cookin = cookin;
     }
 
-    public String getResponse() {
-        return response;
+    public String getError() {
+        return error;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setError(String error) {
+        this.error = error;
     }
 }

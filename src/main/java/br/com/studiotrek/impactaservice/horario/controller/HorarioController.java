@@ -2,8 +2,13 @@ package br.com.studiotrek.impactaservice.horario.controller;
 
 import br.com.studiotrek.impactaservice.horario.model.Horario;
 import br.com.studiotrek.impactaservice.horario.regra.HorarioRegra;
+import br.com.studiotrek.impactaservice.login.model.Login;
+import br.com.studiotrek.impactaservice.quadro_horario.model.QuadroHorario;
+import br.com.studiotrek.impactaservice.quadro_horario.regra.QuadroHorarioRegra;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -14,14 +19,18 @@ import java.util.Map;
 public class HorarioController {
 
     @RequestMapping(value = "/horario", method = RequestMethod.POST)
-    public String post(@RequestBody Map<String, String> json) {
+    public ResponseEntity<List<Horario>> post(@RequestBody String cookie) {
+        List<Horario> horario = new ArrayList<>();
         try {
-            List<Horario> horario = new ArrayList<>();
-            horario = new HorarioRegra(json.get("turmaId"), json.get("produto"), horario).parseHtml(json.get("cookie"));
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            return gson.toJson(horario);
+            QuadroHorario quadroHorario = new QuadroHorario();
+            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(quadroHorario);
+            quadroHorario = quadroHorarioRegra.parseHtml(cookie);
+            horario = new HorarioRegra(quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml(cookie);
+            return new ResponseEntity<>(horario, HttpStatus.OK);
+        } catch (IllegalAccessException ex) {
+            return new ResponseEntity<>(horario, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
-            return "Error";
+            return new ResponseEntity<>(horario, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

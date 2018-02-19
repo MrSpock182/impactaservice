@@ -1,5 +1,6 @@
 package br.com.studiotrek.impactaservice.semestre_nota.regra;
 
+import br.com.studiotrek.impactaservice.access_error.regra.AccessErrorRegra;
 import br.com.studiotrek.impactaservice.base.regra.IRegra;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.semestre_nota.model.Semestre;
@@ -26,34 +27,47 @@ public class SemestreNotaRegra implements Serializable, IRegra<SemestreNota> {
 
     @Override
     public SemestreNota parseHtml(String cookie) throws Exception {
-        String html = this.request.post(Const.URL_SEMESTRE_NOTA, cookie);
-        Document document = Jsoup.parse(html);
-        Element rowFluid = document.select("div.row-fluid").get(1);
-        Elements rowElements = rowFluid.select("strong");
+        String html = "";
 
-        semestreNota.setNomeAluno(rowElements.get(0).text());
-        semestreNota.setRmAluno(rowElements.get(1).text());
-        semestreNota.setCurso(rowElements.get(2).text());
+        try {
+            html = this.request.post(Const.URL_SEMESTRE_NOTA, cookie);
+            Document document = Jsoup.parse(html);
+            Element rowFluid = document.select("div.row-fluid").get(1);
+            Elements rowElements = rowFluid.select("strong");
 
-        Element wellFitDefault = document.select("div.well-fit-default").first();
-        Elements elements = wellFitDefault.select("tbody").select("tr");
+            semestreNota.setNomeAluno(rowElements.get(0).text());
+            semestreNota.setRmAluno(rowElements.get(1).text());
+            semestreNota.setCurso(rowElements.get(2).text());
 
-        List<Semestre> semestres = new ArrayList<>();
-        for (Element element : elements) {
-            Semestre semestre = new Semestre();
+            Element wellFitDefault = document.select("div.well-fit-default").first();
+            Elements elements = wellFitDefault.select("tbody").select("tr");
 
-            semestre.setFaculdade(element.select("td").get(0).text());
-            semestre.setAnoSemestre(element.select("td").get(1).text());
-            semestre.setCurso(element.select("td").get(2).text());
-            semestre.setHorario(element.select("td").get(3).text());
-            semestre.setSemestre(element.select("td").get(4).text());
-            semestre.setStatus(element.select("td").get(5).text());
-            semestre.setUrlBoletim(element.select("td").select("a").attr("href"));
+            List<Semestre> semestres = new ArrayList<>();
+            for (Element element : elements) {
+                Semestre semestre = new Semestre();
 
-            semestres.add(semestre);
+                semestre.setFaculdade(element.select("td").get(0).text());
+                semestre.setAnoSemestre(element.select("td").get(1).text());
+                semestre.setCurso(element.select("td").get(2).text());
+                semestre.setHorario(element.select("td").get(3).text());
+                semestre.setSemestre(element.select("td").get(4).text());
+                semestre.setStatus(element.select("td").get(5).text());
+                semestre.setUrlBoletim(element.select("td").select("a").attr("href"));
+
+                semestres.add(semestre);
+            }
+            this.semestreNota.setSemestres(semestres);
+            return this.semestreNota;
+        } catch (Exception ex) {
+            try {
+                new AccessErrorRegra().parseHtml(html);
+                throw new IllegalAccessException();
+            } catch (IllegalAccessException iaex) {
+                throw iaex;
+            } catch (Exception ex1) {
+                throw ex;
+            }
         }
-        this.semestreNota.setSemestres(semestres);
-        return this.semestreNota;
     }
 
 }

@@ -14,8 +14,9 @@ public class TestLogin {
         try{
             LoginRegra loginRegra = new LoginRegra(new Login());
             Login login = loginRegra.request("1410264", "1693");
-
             assertNotNull(login);
+        } catch (IllegalAccessException ex) {
+            assertTrue(false);
         } catch (Exception ex) {
             assertTrue(false);
         }

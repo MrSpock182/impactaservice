@@ -13,11 +13,12 @@ public class TestNotaFalta {
     public void testNotaFalta() {
         try {
             String url = "boletim.php?codigo=MDE2TVRVeE9EY3lNRFV3TlE9PU5ERTRNakU9";
-
             NotaFaltaRegra notaFaltaRegra = new NotaFaltaRegra(url, new NotaFalta());
             NotaFalta notaFalta = notaFaltaRegra.parseHtml("PHPSESSID=rtljmtmm3dmapvu3a4ncfevft0; path=/");
 
             assertNotNull(notaFalta);
+        } catch (IllegalAccessException ex) {
+            assertTrue(false);
         } catch (Exception ex) {
             assertTrue(false);
         }
