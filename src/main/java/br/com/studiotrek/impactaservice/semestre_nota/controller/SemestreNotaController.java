@@ -6,14 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class SemestreNotaController {
 
     @RequestMapping(value = "/semestre-nota", method = RequestMethod.POST)
-    public ResponseEntity<SemestreNota> post(@RequestBody String cookie) {
+    public ResponseEntity<SemestreNota> post(@RequestBody Map<String, String> json) {
         SemestreNota semestreNota =  new SemestreNota();
         try {
-            semestreNota = new SemestreNotaRegra(semestreNota).parseHtml(cookie);
+            semestreNota = new SemestreNotaRegra(semestreNota).parseHtml(json.get("cookie"));
             return new ResponseEntity<>(semestreNota, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(semestreNota, HttpStatus.UNAUTHORIZED);

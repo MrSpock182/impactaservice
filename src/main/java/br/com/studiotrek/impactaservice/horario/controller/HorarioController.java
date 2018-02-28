@@ -19,13 +19,13 @@ import java.util.Map;
 public class HorarioController {
 
     @RequestMapping(value = "/horario", method = RequestMethod.POST)
-    public ResponseEntity<List<Horario>> post(@RequestBody String cookie) {
+    public ResponseEntity<List<Horario>> post(@RequestBody Map<String, String> json) {
         List<Horario> horario = new ArrayList<>();
         try {
             QuadroHorario quadroHorario = new QuadroHorario();
             QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(quadroHorario);
-            quadroHorario = quadroHorarioRegra.parseHtml(cookie);
-            horario = new HorarioRegra(quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml(cookie);
+            quadroHorario = quadroHorarioRegra.parseHtml(json.get("cookie"));
+            horario = new HorarioRegra(quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml(json.get("cookie"));
             return new ResponseEntity<>(horario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(horario, HttpStatus.UNAUTHORIZED);
