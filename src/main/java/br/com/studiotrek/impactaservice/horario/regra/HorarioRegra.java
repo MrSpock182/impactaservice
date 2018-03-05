@@ -49,12 +49,12 @@ public class HorarioRegra implements Serializable {
                         palavra.append(ch);
                     } else {
                         if (!palavra.toString().equalsIgnoreCase("")) {
-                            list.add(palavra.toString());
+                            list.add(palavra.toString().trim());
                             palavra = new StringBuilder();
                         }
                     }
                 }
-                list.add(palavra.toString());
+                list.add(palavra.toString().trim());
 
                 Set<HorarioDetalhado> horarioDetalhados = new HashSet<>();
                 for (int i = 0; i < list.size(); i += 3) {
