@@ -11,8 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class HorarioRegra implements Serializable {
 
@@ -50,14 +49,14 @@ public class HorarioRegra implements Serializable {
                         palavra.append(ch);
                     } else {
                         if (!palavra.toString().equalsIgnoreCase("")) {
-                            list.add(palavra.toString());
+                            list.add(palavra.toString().trim());
                             palavra = new StringBuilder();
                         }
                     }
                 }
-                list.add(palavra.toString());
+                list.add(palavra.toString().trim());
 
-                List<HorarioDetalhado> horarioDetalhados = new ArrayList<>();
+                Set<HorarioDetalhado> horarioDetalhados = new HashSet<>();
                 for (int i = 0; i < list.size(); i += 3) {
                     HorarioDetalhado horarioDetalhado = new HorarioDetalhado();
                     horarioDetalhado.setDisciplina(list.get(i));
