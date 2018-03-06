@@ -47,33 +47,28 @@ public class AulaDiaRegra {
         String nome = "";
         int dia = c.get(c.DAY_OF_WEEK);
 
-        for (Horario horario : horarios) {
-            switch (dia) {
-                case Calendar.SUNDAY:
-                    break;
-                case Calendar.MONDAY:
-                    horario.getDia().equals("Segunda");
-                    diaHorario = horario;
-                    break;
-                case Calendar.TUESDAY:
-                    horario.getDia().equals("Terça");
-                    diaHorario = horario;
-                    break;
-                case Calendar.WEDNESDAY:
-                    horario.getDia().equals("Quarta");
-                    diaHorario = horario;
-                    break;
-                case Calendar.THURSDAY:
-                    horario.getDia().equals("Quinta");
-                    diaHorario = horario;
-                    break;
-                case Calendar.FRIDAY:
-                    horario.getDia().equals("Sexta");
-                    diaHorario = horario;
-                    break;
-                case Calendar.SATURDAY:
-                    break;
-            }
+        switch (dia) {
+            case Calendar.SUNDAY:
+                break;
+            case Calendar.MONDAY:
+                diaHorario = this.horarios.get(0);
+                break;
+            case Calendar.TUESDAY:
+                diaHorario = this.horarios.get(1);
+                break;
+            case Calendar.WEDNESDAY:
+                diaHorario = this.horarios.get(2);
+                break;
+            case Calendar.THURSDAY:
+                diaHorario = this.horarios.get(3);
+                break;
+            case Calendar.FRIDAY:
+                diaHorario = this.horarios.get(4);
+                break;
+            case Calendar.SATURDAY:
+                break;
+            default:
+                break;
         }
 
         return diaHorario;
