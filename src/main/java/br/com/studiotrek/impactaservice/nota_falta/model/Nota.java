@@ -1,11 +1,21 @@
 package br.com.studiotrek.impactaservice.nota_falta.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Nota implements Serializable {
 
     private String nomeMateria;
-    private String json;
+
+    public HashMap getJson() {
+        return json;
+    }
+
+    public void setJson(HashMap json) {
+        this.json = json;
+    }
+
+    private HashMap json;
 
     public String getNomeMateria() {
         return nomeMateria;
@@ -13,13 +23,5 @@ public class Nota implements Serializable {
 
     public void setNomeMateria(String nomeMateria) {
         this.nomeMateria = nomeMateria;
-    }
-
-    public String getJson() {
-        return json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
     }
 }

@@ -6,6 +6,8 @@ import br.com.studiotrek.impactaservice.nota_falta.model.Nota;
 import br.com.studiotrek.impactaservice.nota_falta.model.NotaFalta;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.util.Const;
+import br.com.studiotrek.impactaservice.util.SerializerUtils;
+import com.google.gson.Gson;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,6 +15,7 @@ import org.jsoup.select.Elements;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
@@ -44,7 +47,7 @@ public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
                         && !element.select("td.table-left").text().equals("")) {
                     Nota nota = new Nota();
                     nota.setNomeMateria(element.select("td.table-left").text());
-                    nota.setJson(element.attr("data-boletim"));
+                    nota.setJson(SerializerUtils.JsonStringToObject(element.attr("data-boletim"), HashMap.class));
 
                     notas.add(nota);
                 }
