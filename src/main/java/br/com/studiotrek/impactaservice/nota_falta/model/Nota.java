@@ -6,16 +6,15 @@ import java.util.HashMap;
 public class Nota implements Serializable {
 
     private String nomeMateria;
+    private HashMap falta;
 
-    public HashMap getJson() {
-        return json;
+    public HashMap getFalta() {
+        return falta;
     }
 
-    public void setJson(HashMap json) {
-        this.json = json;
+    public void setFalta(HashMap falta) {
+        this.falta = falta;
     }
-
-    private HashMap json;
 
     public String getNomeMateria() {
         return nomeMateria;
