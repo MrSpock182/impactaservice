@@ -44,6 +44,8 @@ public class AulaDiaRegra {
         Date date = new Date();
         Calendar c = new GregorianCalendar();
         c.setTime(date);
+        c.setTimeZone(TimeZone.getTimeZone("GMT-2"));
+
         String nome = "";
         int dia = c.get(c.DAY_OF_WEEK);
 
