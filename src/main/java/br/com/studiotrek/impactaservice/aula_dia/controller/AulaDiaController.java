@@ -4,10 +4,7 @@ import br.com.studiotrek.impactaservice.aula_dia.model.AulaDia;
 import br.com.studiotrek.impactaservice.aula_dia.regra.AulaDiaRegra;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -15,11 +12,11 @@ import java.util.Map;
 public class AulaDiaController {
 
     @RequestMapping(value = "/aula-dia", method = RequestMethod.POST)
-    public ResponseEntity<AulaDia> post(@RequestBody Map<String, String> json) {
+    public ResponseEntity<AulaDia> post(@RequestHeader String token) {
         AulaDia aulaDia = new AulaDia();
 
         try {
-            aulaDia = new AulaDiaRegra(aulaDia).getAulaDia(json.get("cookie"));
+            aulaDia = new AulaDiaRegra(aulaDia).getAulaDia(token);
             return new ResponseEntity<>(aulaDia, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(aulaDia, HttpStatus.UNAUTHORIZED);

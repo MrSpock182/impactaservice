@@ -4,10 +4,7 @@ import br.com.studiotrek.impactaservice.nota_falta.model.NotaFalta;
 import br.com.studiotrek.impactaservice.nota_falta.regra.NotaFaltaRegra;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -15,10 +12,10 @@ import java.util.Map;
 public class NotaFaltaController {
 
     @RequestMapping(value = "/nota-falta", method = RequestMethod.POST)
-    public ResponseEntity<NotaFalta> post(@RequestBody Map<String, String> json) {
+    public ResponseEntity<NotaFalta> post(@RequestHeader String token, @RequestBody Map<String, String> json) {
         NotaFalta notaFalta = new NotaFalta();
         try {
-            notaFalta = new NotaFaltaRegra(json.get("url"), notaFalta).parseHtml(json.get("cookie"));
+            notaFalta = new NotaFaltaRegra(json.get("url"), notaFalta).parseHtml(token);
             return new ResponseEntity<>(notaFalta, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(notaFalta, HttpStatus.UNAUTHORIZED);
