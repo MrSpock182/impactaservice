@@ -14,8 +14,11 @@ public class NotaFaltaController {
     @RequestMapping(value = "/nota-falta", method = RequestMethod.POST)
     public ResponseEntity<NotaFalta> post(@RequestHeader String token, @RequestBody Map<String, String> json) {
         NotaFalta notaFalta = new NotaFalta();
+
         try {
-            notaFalta = new NotaFaltaRegra(json.get("url"), notaFalta).parseHtml(token);
+            NotaFaltaRegra notaFaltaRegra = new NotaFaltaRegra(token, json.get("url"), notaFalta);
+            notaFalta = notaFaltaRegra.parseHtml();
+            notaFalta.setSemestreAc(notaFaltaRegra.isSemestreAc());
             return new ResponseEntity<>(notaFalta, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(notaFalta, HttpStatus.UNAUTHORIZED);

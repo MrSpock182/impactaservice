@@ -12,41 +12,46 @@ import java.util.*;
 
 public class AulaDiaRegra {
 
+    private String cookie;
     private AulaDia aulaDia;
     private SemestreNota semestreNota;
     private List<Horario> horarios;
 
-    public AulaDiaRegra(AulaDia aulaDia) {
+    public AulaDiaRegra(String cookie) {
+        this.cookie = cookie;
+    }
+
+    public AulaDiaRegra(String cookie, AulaDia aulaDia) {
+        this.cookie = cookie;
         this.aulaDia = aulaDia;
         this.semestreNota = new SemestreNota();
         this.horarios = new ArrayList<>();
     }
 
-    public AulaDia getAulaDia(String cookie) throws Exception {
-        semestreNota = new SemestreNotaRegra(semestreNota).parseHtml(cookie);
+    public AulaDia getAulaDia() throws Exception {
+        semestreNota = new SemestreNotaRegra(this.cookie, this.semestreNota).parseHtml();
 
         this.aulaDia.setNome(this.semestreNota.getNomeAluno());
         this.aulaDia.setCurso(this.semestreNota.getCurso());
         this.aulaDia.setRm(this.semestreNota.getRmAluno());
-        this.aulaDia.setHorario(getHorario(cookie));
+        this.aulaDia.setHorario(getHorario());
 
         return this.aulaDia;
     }
 
-    private Horario getHorario(String cookie) throws Exception {
+    private Horario getHorario() throws Exception {
         Horario diaHorario = null;
 
         QuadroHorario quadroHorario = new QuadroHorario();
-        QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(quadroHorario);
-        quadroHorario = quadroHorarioRegra.parseHtml(cookie);
-        this.horarios = new HorarioRegra(quadroHorario.getTurmaId(), quadroHorario.getProduto(), this.horarios).parseHtml(cookie);
+        QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(this.cookie, quadroHorario);
+        quadroHorario = quadroHorarioRegra.parseHtml();
+        this.horarios = new HorarioRegra(this.cookie, quadroHorario.getTurmaId(), quadroHorario.getProduto(), this.horarios).parseHtml();
 
         Date date = new Date();
         Calendar c = new GregorianCalendar();
         c.setTime(date);
         c.setTimeZone(TimeZone.getTimeZone("GMT-2"));
 
-        String nome = "";
         int dia = c.get(c.DAY_OF_WEEK);
 
         switch (dia) {

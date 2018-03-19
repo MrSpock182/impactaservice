@@ -3,6 +3,8 @@ package br.com.studiotrek.impactaservice.horario.regra;
 import br.com.studiotrek.impactaservice.access_error.regra.AccessErrorRegra;
 import br.com.studiotrek.impactaservice.horario.model.Horario;
 import br.com.studiotrek.impactaservice.horario.model.HorarioDetalhado;
+import br.com.studiotrek.impactaservice.nota_falta.model.Nota;
+import br.com.studiotrek.impactaservice.nota_falta.regra.NotaFaltaRegra;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.util.Const;
 import org.jsoup.Jsoup;
@@ -15,12 +17,18 @@ import java.util.*;
 
 public class HorarioRegra implements Serializable {
 
+    private String cookie;
     private String turmaId;
     private String produto;
     private List<Horario> horarios;
     private Request request;
 
-    public HorarioRegra(String turmaId, String produto, List<Horario> horarios) {
+    public HorarioRegra(String cookie) {
+
+    }
+
+    public HorarioRegra(String cookie, String turmaId, String produto, List<Horario> horarios) {
+        this.cookie = cookie;
         this.turmaId = turmaId;
         this.produto = produto;
         this.horarios = horarios;
@@ -28,12 +36,12 @@ public class HorarioRegra implements Serializable {
         //turmaid=MDE2TVRVeE9EY3lNRGN5TlE9PU16Z3hOQT09&produto=MDE2TVRVeE9EY3lNRGN5TlE9PU5UYz0=
     }
 
-    public List<Horario> parseHtml(String cookie) throws Exception {
+    public List<Horario> parseHtml() throws Exception {
         String html = "";
 
         try {
             String url = String.format(Const.URL_HORARIO, this.turmaId, this.produto);
-            html = this.request.post(url, cookie);
+            html = this.request.post(url, this.cookie);
             Document doc = Jsoup.parse(html);
 
             Elements diaSemana = doc.select("div.dia-semana");
@@ -62,8 +70,16 @@ public class HorarioRegra implements Serializable {
                     horarioDetalhado.setDisciplina(list.get(i));
                     horarioDetalhado.setProfessor(list.get(i + 1));
                     horarioDetalhado.setSala(list.get(i + 2));
+
+                    Nota nota = new NotaFaltaRegra(this.cookie, "", null).getNotaFaltaDia(list.get(i));
+
+                    horarioDetalhado.setFaltaB1(nota.getFalta().get("FALTAS1").toString());
+                    horarioDetalhado.setFaltaB2(nota.getFalta().get("FALTAS2").toString());
+                    horarioDetalhado.setCargaHoraria(nota.getFalta().get("CARGAHORARIA").toString());
+
                     horarioDetalhados.add(horarioDetalhado);
                 }
+
                 horario.setHorarioDetalhado(horarioDetalhados);
                 this.horarios.add(horario);
             }

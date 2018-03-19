@@ -13,8 +13,8 @@ public class TestSemestreNota {
     public void testSemestreNota() {
         try {
             SemestreNota semestreNota = new SemestreNota();
-            SemestreNotaRegra semestreNotaRegra = new SemestreNotaRegra(semestreNota);
-            semestreNota = semestreNotaRegra.parseHtml("PHPSESSID=rtljmtmm3dmapvu3a4ncfevft0; path=/");
+            SemestreNotaRegra semestreNotaRegra = new SemestreNotaRegra("PHPSESSID=rtljmtmm3dmapvu3a4ncfevft0; path=/", semestreNota);
+            semestreNota = semestreNotaRegra.parseHtml();
 
             assertNotNull(semestreNota);
         } catch (Exception ex) {

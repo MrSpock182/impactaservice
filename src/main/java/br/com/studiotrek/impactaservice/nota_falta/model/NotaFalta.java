@@ -5,7 +5,16 @@ import java.util.List;
 
 public class NotaFalta implements Serializable {
 
+    private Boolean semestreAc;
     private List<Nota> notas;
+
+    public Boolean getSemestreAc() {
+        return semestreAc;
+    }
+
+    public void setSemestreAc(Boolean semestreAc) {
+        this.semestreAc = semestreAc;
+    }
 
     public List<Nota> getNotas() {
         return notas;

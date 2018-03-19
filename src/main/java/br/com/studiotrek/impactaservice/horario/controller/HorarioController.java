@@ -23,9 +23,9 @@ public class HorarioController {
         List<Horario> horario = new ArrayList<>();
         try {
             QuadroHorario quadroHorario = new QuadroHorario();
-            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(quadroHorario);
-            quadroHorario = quadroHorarioRegra.parseHtml(token);
-            horario = new HorarioRegra(quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml(token);
+            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(token, quadroHorario);
+            quadroHorario = quadroHorarioRegra.parseHtml();
+            horario = new HorarioRegra(token, quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml();
             return new ResponseEntity<>(horario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(horario, HttpStatus.UNAUTHORIZED);

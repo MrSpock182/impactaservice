@@ -16,7 +16,7 @@ public class AulaDiaController {
         AulaDia aulaDia = new AulaDia();
 
         try {
-            aulaDia = new AulaDiaRegra(aulaDia).getAulaDia(token);
+            aulaDia = new AulaDiaRegra(token, aulaDia).getAulaDia();
             return new ResponseEntity<>(aulaDia, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(aulaDia, HttpStatus.UNAUTHORIZED);

@@ -13,16 +13,18 @@ import java.io.Serializable;
 
 public class QuadroHorarioRegra implements Serializable, IRegra<QuadroHorario> {
 
+    private String cookie;
     private QuadroHorario quadroHorario;
     private Request request;
 
-    public QuadroHorarioRegra(QuadroHorario quadroHorario) {
+    public QuadroHorarioRegra(String cookie, QuadroHorario quadroHorario) {
+        this.cookie = cookie;
         this.quadroHorario = quadroHorario;
         this.request = new Request();
     }
 
     @Override
-    public QuadroHorario parseHtml(String cookie) throws Exception {
+    public QuadroHorario parseHtml() throws Exception {
         String html = "";
         try {
             html = this.request.post(Const.URL_QUADRO_HORARIO, cookie);

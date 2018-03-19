@@ -17,20 +17,22 @@ import java.util.List;
 
 public class SemestreNotaRegra implements Serializable, IRegra<SemestreNota> {
 
+    private String cookie;
     private SemestreNota semestreNota;
     private Request request;
 
-    public SemestreNotaRegra(SemestreNota semestreNota) {
+    public SemestreNotaRegra(String cookie, SemestreNota semestreNota) {
+        this.cookie = cookie;
         this.semestreNota = semestreNota;
         this.request = new Request();
     }
 
     @Override
-    public SemestreNota parseHtml(String cookie) throws Exception {
+    public SemestreNota parseHtml() throws Exception {
         String html = "";
 
         try {
-            html = this.request.post(Const.URL_SEMESTRE_NOTA, cookie);
+            html = this.request.post(Const.URL_SEMESTRE_NOTA, this.cookie);
             Document document = Jsoup.parse(html);
             Element rowFluid = document.select("div.row-fluid").get(1);
             Elements rowElements = rowFluid.select("strong");

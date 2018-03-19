@@ -13,8 +13,9 @@ public class TestQuadroHorario {
     public void testQuadroHorario() {
         try {
             QuadroHorario quadroHorario = new QuadroHorario();
-            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(quadroHorario);
-            quadroHorario = quadroHorarioRegra.parseHtml("PHPSESSID=btisi130mrjkvqoscs3n44qsi4; path=/");
+            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra("PHPSESSID=btisi130mrjkvqoscs3n44qsi4; path=/",
+                    quadroHorario);
+            quadroHorario = quadroHorarioRegra.parseHtml();
 
             assertNotNull(quadroHorario);
         } catch (Exception ex) {

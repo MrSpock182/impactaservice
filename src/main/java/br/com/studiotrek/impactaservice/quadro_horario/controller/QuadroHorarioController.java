@@ -16,7 +16,7 @@ public class QuadroHorarioController {
     public ResponseEntity<QuadroHorario> post(@RequestHeader String token) {
         QuadroHorario quadroHorario = new QuadroHorario();
         try {
-            quadroHorario = new QuadroHorarioRegra(quadroHorario).parseHtml(token);
+            quadroHorario = new QuadroHorarioRegra(token, quadroHorario).parseHtml();
             return new ResponseEntity<>(quadroHorario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(quadroHorario, HttpStatus.UNAUTHORIZED);

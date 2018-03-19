@@ -19,22 +19,26 @@ import java.util.List;
 
 public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
 
+    private String cookie;
+    private String urlPameter;
     private String url;
     private NotaFalta notaFalta;
     private Request request;
 
-    public NotaFaltaRegra(String url, NotaFalta notaFalta) {
+    public NotaFaltaRegra(String cookie, String url, NotaFalta notaFalta) {
+        this.cookie = cookie;
         this.url = Const.URL_NOTA_FALTA + url;
+        this.urlPameter = url;
         this.notaFalta = notaFalta;
         this.request = new Request();
     }
 
     @Override
-    public NotaFalta parseHtml(String cookie) throws IllegalAccessException, Exception {
+    public NotaFalta parseHtml() throws IllegalAccessException, Exception {
         String html = "";
 
         try {
-            html = this.request.post(this.url, cookie);
+            html = this.request.post(this.url, this.cookie);
             Document doc = Jsoup.parse(html);
 
             Element contentsBulletin = doc.select("div.well-fit-default").first().select("div#div_bulletin").first();
@@ -42,7 +46,7 @@ public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
 
             List<Nota> notas = new ArrayList<>();
             for (Element element : dataBoletim) {
-                if(!element.attr("data-boletim").equals("")
+                if (!element.attr("data-boletim").equals("")
                         && !element.select("td.table-left").text().equals("")) {
                     Nota nota = new Nota();
                     nota.setNomeMateria(element.select("td.table-left").text());
@@ -63,6 +67,23 @@ public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
                 throw ex;
             }
         }
+    }
+
+    public Boolean isSemestreAc() throws Exception {
+        String baseUrl = this.urlPameter.substring(0, this.urlPameter.indexOf("?"));
+        return baseUrl.equals("boletim-graduacao-ac.php");
+    }
+
+    public Nota getNotaFaltaDia(String aula) throws Exception {
+        NotaFalta notaFalta = parseHtml();
+
+        for (Nota nota: notaFalta.getNotas()) {
+            if(nota.getNomeMateria().equalsIgnoreCase(aula)) {
+                return nota;
+            }
+        }
+
+        throw new Exception("Nota não encontrada");
     }
 
 }

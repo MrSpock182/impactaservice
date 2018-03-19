@@ -13,7 +13,7 @@ public class SemestreNotaController {
     public ResponseEntity<SemestreNota> post(@RequestHeader String token) {
         SemestreNota semestreNota =  new SemestreNota();
         try {
-            semestreNota = new SemestreNotaRegra(semestreNota).parseHtml(token);
+            semestreNota = new SemestreNotaRegra(token, semestreNota).parseHtml();
             return new ResponseEntity<>(semestreNota, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(semestreNota, HttpStatus.UNAUTHORIZED);
