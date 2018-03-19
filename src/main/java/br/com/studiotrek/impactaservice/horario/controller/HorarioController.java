@@ -18,7 +18,7 @@ import java.util.Map;
 @RestController
 public class HorarioController {
 
-    @RequestMapping(value = "/horario", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/horario", method = RequestMethod.POST)
     public ResponseEntity<List<Horario>> post(@RequestHeader String token) {
         List<Horario> horario = new ArrayList<>();
         try {
@@ -26,6 +26,23 @@ public class HorarioController {
             QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(token, quadroHorario);
             quadroHorario = quadroHorarioRegra.parseHtml();
             horario = new HorarioRegra(token, quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml();
+            return new ResponseEntity<>(horario, HttpStatus.OK);
+        } catch (IllegalAccessException ex) {
+            return new ResponseEntity<>(horario, HttpStatus.UNAUTHORIZED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(horario, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Deprecated
+    @RequestMapping(value = "/horario", method = RequestMethod.POST)
+    public ResponseEntity<List<Horario>> post(@RequestBody Map<String, String> json) {
+        List<Horario> horario = new ArrayList<>();
+        try {
+            QuadroHorario quadroHorario = new QuadroHorario();
+            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(json.get("cookie"), quadroHorario);
+            quadroHorario = quadroHorarioRegra.parseHtml();
+            horario = new HorarioRegra(json.get("cookie"), quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml();
             return new ResponseEntity<>(horario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(horario, HttpStatus.UNAUTHORIZED);

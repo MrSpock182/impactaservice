@@ -12,11 +12,25 @@ import java.util.Map;
 @RestController
 public class QuadroHorarioController {
 
-    @RequestMapping(value = "/quadro-horario", method = RequestMethod.POST)
+    @RequestMapping(value = "/v2/quadro-horario", method = RequestMethod.POST)
     public ResponseEntity<QuadroHorario> post(@RequestHeader String token) {
         QuadroHorario quadroHorario = new QuadroHorario();
         try {
             quadroHorario = new QuadroHorarioRegra(token, quadroHorario).parseHtml();
+            return new ResponseEntity<>(quadroHorario, HttpStatus.OK);
+        } catch (IllegalAccessException ex) {
+            return new ResponseEntity<>(quadroHorario, HttpStatus.UNAUTHORIZED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(quadroHorario, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Deprecated
+    @RequestMapping(value = "/quadro-horario", method = RequestMethod.POST)
+    public ResponseEntity<QuadroHorario> post(@RequestBody Map<String, String> json) {
+        QuadroHorario quadroHorario = new QuadroHorario();
+        try {
+            quadroHorario = new QuadroHorarioRegra(json.get("cookie"), quadroHorario).parseHtml();
             return new ResponseEntity<>(quadroHorario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(quadroHorario, HttpStatus.UNAUTHORIZED);

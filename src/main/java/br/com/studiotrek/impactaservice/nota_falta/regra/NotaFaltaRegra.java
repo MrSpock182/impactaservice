@@ -74,8 +74,8 @@ public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
         return baseUrl.equals("boletim-graduacao-ac.php");
     }
 
-    public Nota getNotaFaltaDia(String aula) throws Exception {
-        NotaFalta notaFalta = parseHtml();
+    public Nota getNotaFaltaDia(String aula, NotaFalta notaFalta) throws Exception {
+        //NotaFalta notaFalta = parseHtml();
 
         for (Nota nota: notaFalta.getNotas()) {
             if(nota.getNomeMateria().equalsIgnoreCase(aula)) {

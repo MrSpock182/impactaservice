@@ -72,4 +72,14 @@ public class SemestreNotaRegra implements Serializable, IRegra<SemestreNota> {
         }
     }
 
+    public Semestre getLastSemester() throws Exception {
+        SemestreNota semestreNota = parseHtml();
+
+        for (Semestre semester : semestreNota.getSemestres()) {
+            return semester;
+        }
+
+        throw new Exception("none semester found");
+    }
+
 }
