@@ -1,13 +1,14 @@
 package br.com.studiotrek.impactaservice.horario.model;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 public class Horario implements Serializable {
 
     private String dia;
-    private Set<HorarioDetalhado> horarioDetalhado;
+    private List<HorarioDetalhado> horarioDetalhado;
 
     public String getDia() {
         return dia;
@@ -17,11 +18,11 @@ public class Horario implements Serializable {
         this.dia = dia;
     }
 
-    public Set<HorarioDetalhado> getHorarioDetalhado() {
+    public List<HorarioDetalhado> getHorarioDetalhado() {
         return horarioDetalhado;
     }
 
-    public void setHorarioDetalhado(Set<HorarioDetalhado> horarioDetalhado) {
+    public void setHorarioDetalhado(List<HorarioDetalhado> horarioDetalhado) {
         this.horarioDetalhado = horarioDetalhado;
     }
 }

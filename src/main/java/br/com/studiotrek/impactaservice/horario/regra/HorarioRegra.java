@@ -3,13 +3,7 @@ package br.com.studiotrek.impactaservice.horario.regra;
 import br.com.studiotrek.impactaservice.access_error.regra.AccessErrorRegra;
 import br.com.studiotrek.impactaservice.horario.model.Horario;
 import br.com.studiotrek.impactaservice.horario.model.HorarioDetalhado;
-import br.com.studiotrek.impactaservice.nota_falta.model.Nota;
-import br.com.studiotrek.impactaservice.nota_falta.model.NotaFalta;
-import br.com.studiotrek.impactaservice.nota_falta.regra.NotaFaltaRegra;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
-import br.com.studiotrek.impactaservice.semestre_nota.model.Semestre;
-import br.com.studiotrek.impactaservice.semestre_nota.model.SemestreNota;
-import br.com.studiotrek.impactaservice.semestre_nota.regra.SemestreNotaRegra;
 import br.com.studiotrek.impactaservice.util.Const;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -70,7 +64,6 @@ public class HorarioRegra implements Serializable {
                 Set<HorarioDetalhado> horarioDetalhados = new HashSet<>();
 
                 for (int i = 0; i < list.size(); i += 3) {
-
                     HorarioDetalhado horarioDetalhado = new HorarioDetalhado();
                     horarioDetalhado.setDisciplina(list.get(i));
                     horarioDetalhado.setProfessor(list.get(i + 1));
@@ -78,7 +71,12 @@ public class HorarioRegra implements Serializable {
                     horarioDetalhados.add(horarioDetalhado);
                 }
 
-                horario.setHorarioDetalhado(horarioDetalhados);
+                List<HorarioDetalhado> listaHorarioDetalhados = new ArrayList<>();
+                listaHorarioDetalhados.addAll(horarioDetalhados);
+                Collections.reverse(listaHorarioDetalhados);
+
+                horario.setHorarioDetalhado(listaHorarioDetalhados);
+
                 this.horarios.add(horario);
             }
 
