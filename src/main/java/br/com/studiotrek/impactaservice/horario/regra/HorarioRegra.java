@@ -21,18 +21,14 @@ import java.util.*;
 
 public class HorarioRegra implements Serializable {
 
+    private Request request;
     private String cookie;
     private String turmaId;
     private String produto;
     private List<Horario> horarios;
-    private Request request;
-    private Semestre semestre;
-    private NotaFalta notaFalta;
 
     public HorarioRegra(String cookie) throws Exception {
         this.cookie = cookie;
-        this.semestre = new SemestreNotaRegra(this.cookie, new SemestreNota()).getLastSemester();
-        this.notaFalta = new NotaFaltaRegra(this.cookie, this.semestre.getUrlBoletim(), this.notaFalta).parseHtml();
     }
 
     public HorarioRegra(String cookie, String turmaId, String produto, List<Horario> horarios) throws Exception {
@@ -41,12 +37,6 @@ public class HorarioRegra implements Serializable {
         this.produto = produto;
         this.horarios = horarios;
         this.request = new Request();
-        this.semestre = new SemestreNotaRegra(this.cookie, new SemestreNota()).getLastSemester();
-        this.notaFalta = new NotaFaltaRegra(this.cookie, this.semestre.getUrlBoletim(), new NotaFalta()).parseHtml();
-    }
-
-    private Nota getNota(String nomeMateria) throws Exception {
-        return new NotaFaltaRegra(this.cookie, this.semestre.getUrlBoletim(), new NotaFalta()).getNotaFaltaDia(nomeMateria, this.notaFalta);
     }
 
     public List<Horario> parseHtml() throws Exception {
@@ -85,13 +75,6 @@ public class HorarioRegra implements Serializable {
                     horarioDetalhado.setDisciplina(list.get(i));
                     horarioDetalhado.setProfessor(list.get(i + 1));
                     horarioDetalhado.setSala(list.get(i + 2));
-
-                    Nota nota = getNota(list.get(i));
-
-                    horarioDetalhado.setFaltaB1(nota.getFalta().get("FALTAS1").toString());
-                    horarioDetalhado.setFaltaB2(nota.getFalta().get("FALTAS2").toString());
-                    horarioDetalhado.setCargaHoraria(nota.getFalta().get("CARGAHORARIA").toString());
-
                     horarioDetalhados.add(horarioDetalhado);
                 }
 
