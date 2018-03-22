@@ -34,7 +34,7 @@ public class LoginController {
     public ResponseEntity<String> get() {
         try {
             Calendar c = new GregorianCalendar();
-            c.setTimeZone(TimeZone.getTimeZone("GMT-2"));
+            c.setTimeZone(TimeZone.getTimeZone("GMT-3"));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
             String strDate = sdf.format(c.getTime());
 
