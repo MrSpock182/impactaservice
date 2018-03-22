@@ -8,6 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 @RestController
 public class LoginController {
 
@@ -21,6 +27,23 @@ public class LoginController {
             return new ResponseEntity<>(new Login(ex.getMessage()), HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
             return new ResponseEntity<>(new Login(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(value = "/hora", method = RequestMethod.GET)
+    public ResponseEntity<String> get() {
+        try {
+            Date date = new Date();
+            Calendar c = new GregorianCalendar();
+            c.setTime(date);
+            c.setTimeZone(TimeZone.getTimeZone("GMT-2"));
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
+            String strDate = sdf.format(c.getTime());
+
+            return new ResponseEntity<>(strDate, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>("", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
