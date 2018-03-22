@@ -33,11 +33,8 @@ public class LoginController {
     @RequestMapping(value = "/hora", method = RequestMethod.GET)
     public ResponseEntity<String> get() {
         try {
-            Date date = new Date();
             Calendar c = new GregorianCalendar();
-            c.setTime(date);
             c.setTimeZone(TimeZone.getTimeZone("GMT-2"));
-
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SS");
             String strDate = sdf.format(c.getTime());
 
