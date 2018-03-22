@@ -47,10 +47,11 @@ public class AulaDiaRegra {
         quadroHorario = quadroHorarioRegra.parseHtml();
         this.horarios = new HorarioRegra(this.cookie, quadroHorario.getTurmaId(), quadroHorario.getProduto(), this.horarios).parseHtml();
 
-        Date date = new Date();
-        Calendar c = new GregorianCalendar();
-        c.setTime(date);
-        c.setTimeZone(TimeZone.getTimeZone("GMT-2"));
+        TimeZone tz = TimeZone.getTimeZone("America/Sao_Paulo");
+        TimeZone.setDefault(tz);
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeZone(tz);
 
         int dia = c.get(c.DAY_OF_WEEK);
 
