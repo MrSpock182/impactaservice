@@ -5,17 +5,21 @@ import br.com.studiotrek.impactaservice.horario.model.Horario;
 import br.com.studiotrek.impactaservice.horario.model.HorarioDetalhado;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.util.Const;
+import br.com.studiotrek.impactaservice.util.Inject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.*;
 
 public class HorarioRegra implements Serializable {
 
+    @Autowired
     private Request request;
+
     private String cookie;
     private String turmaId;
     private String produto;
@@ -26,13 +30,14 @@ public class HorarioRegra implements Serializable {
         this.turmaId = turmaId;
         this.produto = produto;
         this.horarios = horarios;
-        this.request = new Request();
     }
 
     public List<Horario> parseHtml() throws Exception {
         String html = "";
 
         try {
+            this.request = Inject.getContext().getBean(Request.class);
+
             String url = String.format(Const.URL_HORARIO, this.turmaId, this.produto);
             html = this.request.post(url, this.cookie);
             Document doc = Jsoup.parse(html);
