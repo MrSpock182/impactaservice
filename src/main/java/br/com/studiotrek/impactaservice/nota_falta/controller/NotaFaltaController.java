@@ -13,31 +13,28 @@ public class NotaFaltaController {
 
     @RequestMapping(value = "/v2/nota-falta", method = RequestMethod.POST)
     public ResponseEntity<NotaFalta> post(@RequestHeader String token, @RequestBody Map<String, String> json) {
-        NotaFalta notaFalta = new NotaFalta();
-
         try {
-            NotaFaltaRegra notaFaltaRegra = new NotaFaltaRegra(token, json.get("url"), notaFalta);
-            notaFalta = notaFaltaRegra.parseHtml();
+            NotaFaltaRegra notaFaltaRegra = new NotaFaltaRegra(token, json.get("url"));
+            NotaFalta notaFalta = notaFaltaRegra.parseHtml();
             notaFalta.setSemestreAc(notaFaltaRegra.isSemestreAc());
             return new ResponseEntity<>(notaFalta, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
-            return new ResponseEntity<>(notaFalta, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>((NotaFalta) null, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
-            return new ResponseEntity<>(notaFalta, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>((NotaFalta) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Deprecated
     @RequestMapping(value = "/nota-falta", method = RequestMethod.POST)
     public ResponseEntity<NotaFalta> post(@RequestBody Map<String, String> json) {
-        NotaFalta notaFalta = new NotaFalta();
         try {
-            notaFalta = new NotaFaltaRegra(json.get("cookie"), json.get("url"), notaFalta).parseHtml();
+            NotaFalta notaFalta = new NotaFaltaRegra(json.get("cookie"), json.get("url")).parseHtml();
             return new ResponseEntity<>(notaFalta, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
-            return new ResponseEntity<>(notaFalta, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>((NotaFalta) null, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
-            return new ResponseEntity<>(notaFalta, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>((NotaFalta) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

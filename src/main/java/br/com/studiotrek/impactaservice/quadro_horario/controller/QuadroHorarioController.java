@@ -16,7 +16,7 @@ public class QuadroHorarioController {
     public ResponseEntity<QuadroHorario> post(@RequestHeader String token) {
         QuadroHorario quadroHorario = new QuadroHorario();
         try {
-            quadroHorario = new QuadroHorarioRegra(token, quadroHorario).parseHtml();
+            quadroHorario = new QuadroHorarioRegra(token).parseHtml();
             return new ResponseEntity<>(quadroHorario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(quadroHorario, HttpStatus.UNAUTHORIZED);
@@ -30,7 +30,7 @@ public class QuadroHorarioController {
     public ResponseEntity<QuadroHorario> post(@RequestBody Map<String, String> json) {
         QuadroHorario quadroHorario = new QuadroHorario();
         try {
-            quadroHorario = new QuadroHorarioRegra(json.get("cookie"), quadroHorario).parseHtml();
+            quadroHorario = new QuadroHorarioRegra(json.get("cookie")).parseHtml();
             return new ResponseEntity<>(quadroHorario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
             return new ResponseEntity<>(quadroHorario, HttpStatus.UNAUTHORIZED);

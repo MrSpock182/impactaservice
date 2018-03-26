@@ -1,7 +1,10 @@
 package br.com.studiotrek.impactaservice.quadro_horario.model;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 
+@Repository
 public class QuadroHorario implements Serializable {
     private String turmaId;
     private String produto;

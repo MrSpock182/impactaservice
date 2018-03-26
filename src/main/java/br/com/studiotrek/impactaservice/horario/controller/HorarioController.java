@@ -23,9 +23,8 @@ public class HorarioController {
     public ResponseEntity<List<Horario>> post(@RequestHeader String token) {
         List<Horario> horario = new ArrayList<>();
         try {
-            QuadroHorario quadroHorario = new QuadroHorario();
-            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(token, quadroHorario);
-            quadroHorario = quadroHorarioRegra.parseHtml();
+            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(token);
+            QuadroHorario quadroHorario = quadroHorarioRegra.parseHtml();
             horario = new HorarioRegra(token, quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml();
             return new ResponseEntity<>(horario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
@@ -40,9 +39,8 @@ public class HorarioController {
     public ResponseEntity<List<Horario>> post(@RequestBody Map<String, String> json) {
         List<Horario> horario = new ArrayList<>();
         try {
-            QuadroHorario quadroHorario = new QuadroHorario();
-            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(json.get("cookie"), quadroHorario);
-            quadroHorario = quadroHorarioRegra.parseHtml();
+            QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(json.get("cookie"));
+            QuadroHorario quadroHorario = quadroHorarioRegra.parseHtml();
             horario = new HorarioRegra(json.get("cookie"), quadroHorario.getTurmaId(), quadroHorario.getProduto(), horario).parseHtml();
             return new ResponseEntity<>(horario, HttpStatus.OK);
         } catch (IllegalAccessException ex) {

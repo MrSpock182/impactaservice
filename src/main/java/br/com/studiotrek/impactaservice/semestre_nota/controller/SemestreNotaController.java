@@ -13,28 +13,26 @@ public class SemestreNotaController {
 
     @RequestMapping(value = "/v2/semestre-nota", method = RequestMethod.POST)
     public ResponseEntity<SemestreNota> post(@RequestHeader String token) {
-        SemestreNota semestreNota =  new SemestreNota();
         try {
-            semestreNota = new SemestreNotaRegra(token, semestreNota).parseHtml();
+            SemestreNota semestreNota = new SemestreNotaRegra(token).parseHtml();
             return new ResponseEntity<>(semestreNota, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
-            return new ResponseEntity<>(semestreNota, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>((SemestreNota) null, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
-            return new ResponseEntity<>(semestreNota, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>((SemestreNota) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Deprecated
     @RequestMapping(value = "/semestre-nota", method = RequestMethod.POST)
     public ResponseEntity<SemestreNota> post(@RequestBody Map<String, String> json) {
-        SemestreNota semestreNota =  new SemestreNota();
         try {
-            semestreNota = new SemestreNotaRegra(json.get("cookie"), semestreNota).parseHtml();
+            SemestreNota semestreNota = new SemestreNotaRegra(json.get("cookie")).parseHtml();
             return new ResponseEntity<>(semestreNota, HttpStatus.OK);
         } catch (IllegalAccessException ex) {
-            return new ResponseEntity<>(semestreNota, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>((SemestreNota) null, HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
-            return new ResponseEntity<>(semestreNota, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>((SemestreNota) null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

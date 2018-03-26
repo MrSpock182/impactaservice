@@ -1,9 +1,12 @@
 package br.com.studiotrek.impactaservice.aula_dia.model;
 
 import br.com.studiotrek.impactaservice.horario.model.Horario;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 
+@Repository
 public class AulaDia implements Serializable {
 
     private String nome;

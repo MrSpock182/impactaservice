@@ -1,7 +1,10 @@
 package br.com.studiotrek.impactaservice.login.model;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 
+@Repository
 public class Login implements Serializable {
     private String cookin;
     private String error;

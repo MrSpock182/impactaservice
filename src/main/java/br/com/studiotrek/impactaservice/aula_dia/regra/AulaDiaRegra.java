@@ -3,33 +3,38 @@ package br.com.studiotrek.impactaservice.aula_dia.regra;
 import br.com.studiotrek.impactaservice.aula_dia.model.AulaDia;
 import br.com.studiotrek.impactaservice.horario.model.Horario;
 import br.com.studiotrek.impactaservice.horario.regra.HorarioRegra;
+import br.com.studiotrek.impactaservice.login.model.Login;
 import br.com.studiotrek.impactaservice.quadro_horario.model.QuadroHorario;
 import br.com.studiotrek.impactaservice.quadro_horario.regra.QuadroHorarioRegra;
 import br.com.studiotrek.impactaservice.semestre_nota.model.SemestreNota;
 import br.com.studiotrek.impactaservice.semestre_nota.regra.SemestreNotaRegra;
+import br.com.studiotrek.impactaservice.util.Inject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
 public class AulaDiaRegra {
 
     private String cookie;
-    private AulaDia aulaDia;
-    private SemestreNota semestreNota;
     private List<Horario> horarios;
+
+    @Autowired
+    private AulaDia aulaDia;
+
+    @Autowired
+    private SemestreNota semestreNota;
+
 
     public AulaDiaRegra(String cookie) {
         this.cookie = cookie;
-    }
-
-    public AulaDiaRegra(String cookie, AulaDia aulaDia) {
-        this.cookie = cookie;
-        this.aulaDia = aulaDia;
-        this.semestreNota = new SemestreNota();
         this.horarios = new ArrayList<>();
     }
 
     public AulaDia getAulaDia() throws Exception {
-        semestreNota = new SemestreNotaRegra(this.cookie, this.semestreNota).parseHtml();
+        this.aulaDia = Inject.getContext().getBean(AulaDia.class);
+        this.semestreNota = Inject.getContext().getBean(SemestreNota.class);
+
+        semestreNota = new SemestreNotaRegra(this.cookie).parseHtml();
 
         this.aulaDia.setNome(this.semestreNota.getNomeAluno());
         this.aulaDia.setCurso(this.semestreNota.getCurso());
@@ -42,9 +47,8 @@ public class AulaDiaRegra {
     private Horario getHorario() throws Exception {
         Horario diaHorario = null;
 
-        QuadroHorario quadroHorario = new QuadroHorario();
-        QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(this.cookie, quadroHorario);
-        quadroHorario = quadroHorarioRegra.parseHtml();
+        QuadroHorarioRegra quadroHorarioRegra = new QuadroHorarioRegra(this.cookie);
+        QuadroHorario quadroHorario = quadroHorarioRegra.parseHtml();
         this.horarios = new HorarioRegra(this.cookie, quadroHorario.getTurmaId(), quadroHorario.getProduto(), this.horarios).parseHtml();
 
         TimeZone tz = TimeZone.getTimeZone("America/Sao_Paulo");

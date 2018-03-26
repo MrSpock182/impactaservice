@@ -6,6 +6,7 @@ import br.com.studiotrek.impactaservice.nota_falta.model.Nota;
 import br.com.studiotrek.impactaservice.nota_falta.model.NotaFalta;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.util.Const;
+import br.com.studiotrek.impactaservice.util.Inject;
 import br.com.studiotrek.impactaservice.util.SerializerUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -25,12 +26,10 @@ public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
     private NotaFalta notaFalta;
     private Request request;
 
-    public NotaFaltaRegra(String cookie, String url, NotaFalta notaFalta) {
+    public NotaFaltaRegra(String cookie, String url) {
         this.cookie = cookie;
         this.url = Const.URL_NOTA_FALTA + url;
         this.urlPameter = url;
-        this.notaFalta = notaFalta;
-        this.request = new Request();
     }
 
     @Override
@@ -38,6 +37,9 @@ public class NotaFaltaRegra implements Serializable, IRegra<NotaFalta> {
         String html = "";
 
         try {
+            this.notaFalta = Inject.getContext().getBean(NotaFalta.class);
+            this.request = Inject.getContext().getBean(Request.class);
+
             html = this.request.post(this.url, this.cookie);
             Document doc = Jsoup.parse(html);
 

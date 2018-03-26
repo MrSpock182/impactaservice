@@ -1,8 +1,11 @@
 package br.com.studiotrek.impactaservice.nota_falta.model;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Repository
 public class NotaFalta implements Serializable {
 
     private Boolean semestreAc;

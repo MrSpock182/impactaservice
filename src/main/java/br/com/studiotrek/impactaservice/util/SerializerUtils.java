@@ -1,5 +1,4 @@
 package br.com.studiotrek.impactaservice.util;
-
 import com.google.gson.Gson;
 
 public class SerializerUtils {
@@ -9,4 +8,5 @@ public class SerializerUtils {
     public static <T> T JsonStringToObject(String json, Class<T> clazz) {
         return gson.fromJson(json, clazz);
     }
+
 }

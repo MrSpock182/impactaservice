@@ -2,14 +2,17 @@ package br.com.studiotrek.impactaservice.semestre_nota.regra;
 
 import br.com.studiotrek.impactaservice.access_error.regra.AccessErrorRegra;
 import br.com.studiotrek.impactaservice.base.regra.IRegra;
+import br.com.studiotrek.impactaservice.quadro_horario.model.QuadroHorario;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.semestre_nota.model.Semestre;
 import br.com.studiotrek.impactaservice.semestre_nota.model.SemestreNota;
 import br.com.studiotrek.impactaservice.util.Const;
+import br.com.studiotrek.impactaservice.util.Inject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,13 +21,15 @@ import java.util.List;
 public class SemestreNotaRegra implements Serializable, IRegra<SemestreNota> {
 
     private String cookie;
+
+    @Autowired
     private SemestreNota semestreNota;
+
+    @Autowired
     private Request request;
 
-    public SemestreNotaRegra(String cookie, SemestreNota semestreNota) {
+    public SemestreNotaRegra(String cookie) {
         this.cookie = cookie;
-        this.semestreNota = semestreNota;
-        this.request = new Request();
     }
 
     @Override
@@ -32,6 +37,9 @@ public class SemestreNotaRegra implements Serializable, IRegra<SemestreNota> {
         String html = "";
 
         try {
+            this.semestreNota = Inject.getContext().getBean(SemestreNota.class);
+            this.request = Inject.getContext().getBean(Request.class);
+
             html = this.request.post(Const.URL_SEMESTRE_NOTA, this.cookie);
             Document document = Jsoup.parse(html);
             Element rowFluid = document.select("div.row-fluid").get(1);

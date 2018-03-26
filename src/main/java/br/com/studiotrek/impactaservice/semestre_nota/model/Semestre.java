@@ -1,7 +1,10 @@
 package br.com.studiotrek.impactaservice.semestre_nota.model;
 
+import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 
+@Repository
 public class Semestre implements Serializable {
 
     private String faculdade;

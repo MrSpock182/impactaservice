@@ -2,31 +2,39 @@ package br.com.studiotrek.impactaservice.quadro_horario.regra;
 
 import br.com.studiotrek.impactaservice.access_error.regra.AccessErrorRegra;
 import br.com.studiotrek.impactaservice.base.regra.IRegra;
+import br.com.studiotrek.impactaservice.login.model.Login;
 import br.com.studiotrek.impactaservice.quadro_horario.model.QuadroHorario;
 import br.com.studiotrek.impactaservice.request_impacta.Request;
 import br.com.studiotrek.impactaservice.util.Const;
+import br.com.studiotrek.impactaservice.util.Inject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
 public class QuadroHorarioRegra implements Serializable, IRegra<QuadroHorario> {
 
     private String cookie;
+
+    @Autowired
     private QuadroHorario quadroHorario;
+
+    @Autowired
     private Request request;
 
-    public QuadroHorarioRegra(String cookie, QuadroHorario quadroHorario) {
+    public QuadroHorarioRegra(String cookie) {
         this.cookie = cookie;
-        this.quadroHorario = quadroHorario;
-        this.request = new Request();
     }
 
     @Override
     public QuadroHorario parseHtml() throws Exception {
         String html = "";
         try {
+            this.quadroHorario = Inject.getContext().getBean(QuadroHorario.class);
+            this.request = Inject.getContext().getBean(Request.class);
+
             html = this.request.post(Const.URL_QUADRO_HORARIO, cookie);
 
             Document doc = Jsoup.parse(html);

@@ -21,10 +21,6 @@ public class HorarioRegra implements Serializable {
     private String produto;
     private List<Horario> horarios;
 
-    public HorarioRegra(String cookie) throws Exception {
-        this.cookie = cookie;
-    }
-
     public HorarioRegra(String cookie, String turmaId, String produto, List<Horario> horarios) throws Exception {
         this.cookie = cookie;
         this.turmaId = turmaId;
